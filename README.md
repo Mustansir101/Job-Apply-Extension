@@ -91,7 +91,3 @@ node test/serve.js
 ## Privacy
 
 All profile data is stored exclusively in `chrome.storage.local` on your own machine. No data is transmitted anywhere. The extension requests only the `storage`, `activeTab`, and `scripting` permissions.
-
-## License
-
-MIT
