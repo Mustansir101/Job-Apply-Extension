@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autofill Local Test Form</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f6fb;
+      --panel: #fff;
+      --text: #1c2436;
+      --muted: #66718a;
+      --line: #d9e0ec;
+      --accent: #2457d6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    main { max-width: 780px; margin: 0 auto; padding: 28px 18px 80px; }
+    h1 { font-size: 24px; margin: 0 0 4px; }
+    .intro { color: var(--muted); margin: 0 0 18px; }
+    .banner {
+      padding: 10px 12px;
+      border: 1px solid #cfe0ff;
+      background: #eaf1ff;
+      border-radius: 9px;
+      color: #193e92;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 18px 20px;
+      margin-bottom: 14px;
+    }
+    h2 { font-size: 15px; margin: 0 0 12px; }
+    label.field { display: block; margin: 11px 0 5px; font-weight: 600; font-size: 13px; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="number"], textarea, select {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      font: inherit;
+      font-size: 14px;
+      background: #fbfcff;
+    }
+    textarea { min-height: 80px; resize: vertical; }
+    fieldset { border: 0; padding: 0; margin: 16px 0 0; }
+    legend { font-weight: 600; font-size: 13px; margin-bottom: 6px; }
+    .choices { display: flex; gap: 16px; flex-wrap: wrap; }
+    .choices label { display: flex; gap: 6px; align-items: center; font-size: 14px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .mock-question { padding: 8px 0 14px; border-bottom: 1px solid var(--line); }
+    .mock-question:last-child { border-bottom: 0; padding-bottom: 0; }
+    .mock-question:first-child { padding-top: 0; }
+    .mock-title { font-size: 14px; font-weight: 650; margin-bottom: 7px; }
+    .mock-answer { min-height: 34px; }
+    .mock-radio-group { display: flex; flex-direction: column; gap: 7px; }
+    .mock-radio, .mock-checkbox {
+      display: flex; align-items: center; gap: 9px;
+      width: fit-content; padding: 3px 4px; border-radius: 5px;
+      cursor: pointer; font-size: 14px;
+    }
+    .mock-radio::before, .mock-checkbox::before {
+      content: ""; width: 16px; height: 16px; border: 2px solid #8a96ad; display: inline-block;
+    }
+    .mock-radio::before { border-radius: 50%; }
+    .mock-radio[aria-checked="true"]::before { border-color: var(--accent); box-shadow: inset 0 0 0 4px var(--accent); }
+    .mock-checkbox::before { border-radius: 3px; }
+    .mock-checkbox[aria-checked="true"]::before { border-color: var(--accent); background: var(--accent); }
+    .mock-dropdown {
+      border: 1px solid var(--line); border-radius: 7px; padding: 8px 10px;
+      background: #fbfcff; cursor: pointer; width: 260px; max-width: 100%; font-size: 14px;
+    }
+    .mock-menu {
+      position: relative; z-index: 2; width: 260px; max-width: 100%;
+      background: #fff; border: 1px solid var(--line); border-radius: 7px;
+      box-shadow: 0 8px 24px rgba(20, 32, 60, 0.16); margin-top: 4px; overflow: hidden;
+    }
+    .mock-option { padding: 8px 10px; font-size: 14px; cursor: pointer; }
+    .mock-option:hover { background: #eef3ff; }
+    .toolbar { display: flex; align-items: center; gap: 12px; margin: 18px 0 8px; }
+    button {
+      border: 1px solid var(--line); border-radius: 8px; background: #fff;
+      padding: 8px 12px; font: inherit; font-size: 13px; font-weight: 650; cursor: pointer;
+    }
+    pre {
+      background: #101827; color: #d9e5ff; padding: 12px; border-radius: 9px;
+      font-size: 12px; overflow-x: auto; white-space: pre-wrap;
+    }
+    .note { color: var(--muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Autofill Local Test Form</h1>
+    <p class="intro">A local fixture for testing the extension. It does not submit anywhere.</p>
+    <div class="banner">
+      Test steps: load the unpacked extension, enable <strong>Allow access to file URLs</strong> for it,
+      open this file, save a profile in the popup, then click <strong>Fill Current Form</strong>.
+    </div>
+
+    <section aria-labelledby="standard-heading">
+      <h2 id="standard-heading">Standard HTML fields</h2>
+
+      <div class="grid2">
+        <div>
+          <label class="field" for="test-name">Full Name</label>
+          <input id="test-name" name="fullName" type="text">
+        </div>
+        <div>
+          <label class="field" for="test-email">Email Address</label>
+          <input id="test-email" name="email" type="email" value="already.filled@example.com">
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <label class="field" for="test-phone">Mobile Number</label>
+          <input id="test-phone" name="phone" type="tel">
+        </div>
+        <div>
+          <label class="field" for="test-city">Current Location</label>
+          <input id="test-city" name="city" type="text">
+        </div>
+      </div>
+
+      <label class="field" for="test-college">Name of your college</label>
+      <input id="test-college" name="college" type="text">
+
+      <label class="field" for="test-degree">Degree / Qualification</label>
+      <input id="test-degree" name="degree" type="text">
+
+      <label class="field" for="test-branch">Branch / Specialization</label>
+      <input id="test-branch" name="branch" type="text">
+
+      <div class="grid2">
+        <div>
+          <label class="field" for="test-grad">Graduation Year</label>
+          <select id="test-grad" name="graduationYear">
+            <option value="">Select year</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+          </select>
+        </div>
+        <div>
+          <label class="field" for="test-cgpa">Current CGPA</label>
+          <input id="test-cgpa" name="cgpa" type="number" step="0.01">
+        </div>
+      </div>
+
+      <label class="field" for="test-linkedin">LinkedIn Profile</label>
+      <input id="test-linkedin" name="linkedin" type="url">
+
+      <label class="field" for="test-github">GitHub URL</label>
+      <input id="test-github" name="github" type="url">
+
+      <label class="field" for="test-portfolio">Portfolio URL</label>
+      <input id="test-portfolio" name="portfolio" type="url">
+
+      <fieldset>
+        <legend>Degree</legend>
+        <div class="choices">
+          <label><input type="radio" name="degreeChoice" value="B.Tech"> B.Tech</label>
+          <label><input type="radio" name="degreeChoice" value="B.Sc"> B.Sc</label>
+          <label><input type="radio" name="degreeChoice" value="B.Com"> B.Com</label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Which profiles do you have?</legend>
+        <div class="choices">
+          <label><input type="checkbox" name="profiles" value="linkedin"> LinkedIn</label>
+          <label><input type="checkbox" name="profiles" value="github"> GitHub</label>
+          <label><input type="checkbox" name="profiles" value="portfolio"> Portfolio</label>
+        </div>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="google-heading">
+      <h2 id="google-heading">Mock Google Forms markup</h2>
+      <p class="note">These controls imitate Google Forms' custom DOM. This is not a live Google Form.</p>
+
+      <div role="listitem" class="mock-question">
+        <div role="heading" aria-level="1" class="mock-title">Phone Number</div>
+        <div class="mock-answer">
+          <input type="text" placeholder="Your answer" aria-label="Your answer" data-entry="phone">
+        </div>
+      </div>
+
+      <div role="listitem" class="mock-question">
+        <div role="heading" aria-level="1" class="mock-title">College / University</div>
+        <div class="mock-answer">
+          <input type="text" placeholder="Your answer" aria-label="Your answer" data-entry="college">
+        </div>
+      </div>
+
+      <div role="listitem" class="mock-question">
+        <div role="heading" aria-level="1" class="mock-title">Branch</div>
+        <div role="radiogroup" class="mock-radio-group">
+          <div role="radio" aria-checked="false" data-value="CSE" tabindex="0">CSE</div>
+          <div role="radio" aria-checked="false" data-value="IT" tabindex="0">IT</div>
+          <div role="radio" aria-checked="false" data-value="ECE" tabindex="0">ECE</div>
+        </div>
+      </div>
+
+      <div role="listitem" class="mock-question">
+        <div role="heading" aria-level="1" class="mock-title">Email receipt</div>
+        <div role="group">
+          <div role="checkbox" aria-checked="false" tabindex="0">Record [email address] as the email to be included with my response</div>
+        </div>
+      </div>
+
+      <div role="listitem" class="mock-question">
+        <div role="heading" aria-level="1" class="mock-title">Expected Graduation</div>
+        <div id="mock-dropdown" role="listbox" aria-expanded="false" aria-label="Choose" class="mock-dropdown" tabindex="0">
+          <div role="option" aria-selected="true">Choose</div>
+        </div>
+        <div id="mock-menu" class="mock-menu" hidden>
+          <div role="option" data-value="2025">2025</div>
+          <div role="option" data-value="2026">2026</div>
+          <div role="option" data-value="2027">2027</div>
+        </div>
+      </div>
+
+      <div role="listitem" class="mock-question">
+        <div role="heading" aria-level="1" class="mock-title">Why do you want to join us?</div>
+        <div class="mock-answer">
+          <textarea placeholder="Your answer" aria-label="Your answer" rows="4"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="trap-heading">
+      <h2 id="trap-heading">Fields that should be skipped</h2>
+      <label class="field" for="trap-company">Company Name</label>
+      <input id="trap-company" name="company" type="text" value="Existing Co.">
+
+      <label class="field" for="trap-first">First Name</label>
+      <input id="trap-first" name="firstName" type="text">
+
+      <label class="field" for="trap-why">Why should we hire you?</label>
+      <textarea id="trap-why" name="why" rows="3"></textarea>
+
+      <label class="field" for="trap-alt">Alternate Phone Number</label>
+      <input id="trap-alt" name="alternatePhone" type="tel">
+    </section>
+
+    <div class="toolbar">
+      <button id="show-values" type="button">Show current values</button>
+      <span class="note">Nothing is submitted.</span>
+    </div>
+    <pre id="values" hidden></pre>
+  </main>
+
+  <script src="../lib/matcher.js"></script>
+  <script src="../content/filler.js"></script>
+  <script>
+    // Mock behavior for the Google-like controls. The real extension does not
+    // depend on this script; it only makes this local fixture interactive.
+    document.querySelectorAll('[role="radio"]').forEach(function (radio) {
+      radio.addEventListener('click', function () {
+        var group = radio.closest('[role="radiogroup"]');
+        group.querySelectorAll('[role="radio"]').forEach(function (item) {
+          item.setAttribute('aria-checked', item === radio ? 'true' : 'false');
+        });
+      });
+    });
+
+    document.querySelectorAll('[role="checkbox"]').forEach(function (box) {
+      box.addEventListener('click', function () {
+        box.setAttribute(
+          'aria-checked',
+          box.getAttribute('aria-checked') === 'true' ? 'false' : 'true'
+        );
+      });
+    });
+
+    var dropdown = document.getElementById('mock-dropdown');
+    var menu = document.getElementById('mock-menu');
+
+    dropdown.addEventListener('click', function (event) {
+      if (event.target.closest('[role="option"]')) return;
+      menu.hidden = !menu.hidden;
+      dropdown.setAttribute('aria-expanded', String(!menu.hidden));
+    });
+
+    menu.querySelectorAll('[role="option"]').forEach(function (option) {
+      option.addEventListener('click', function () {
+        var value = option.getAttribute('data-value');
+        dropdown.querySelector('[role="option"]').textContent = value;
+        dropdown.setAttribute('aria-label', value);
+        menu.hidden = true;
+        dropdown.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    document.getElementById('show-values').addEventListener('click', function () {
+      var output = {};
+      document.querySelectorAll('input, textarea, select').forEach(function (el) {
+        if (!el.name) return;
+        if (el.type === 'radio' || el.type === 'checkbox') {
+          if (el.checked) {
+            output[el.name] = output[el.name] || [];
+            output[el.name].push(el.value);
+          }
+        } else {
+          output[el.name] = el.value;
+        }
+      });
+      document.querySelectorAll('[role="radio"][aria-checked="true"]').forEach(function (el) {
+        output.mockBranch = el.getAttribute('data-value');
+      });
+      output.mockGraduation = dropdown.querySelector('[role="option"]').textContent;
+      document.querySelectorAll('[placeholder="Your answer"]').forEach(function (el, index) {
+        output['mockText' + index] = el.value;
+      });
+      var pre = document.getElementById('values');
+      pre.hidden = false;
+      pre.textContent = JSON.stringify(output, null, 2);
+    });
+  </script>
+</body>
+</html>

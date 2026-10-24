@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Application Autofill</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <main class="app">
+    <header class="hero">
+      <img src="icons/icon128.png" width="34" height="34" alt="" aria-hidden="true" class="mark-icon">
+      <div>
+        <h1>Job Application Autofill</h1>
+        <p>Your details stay in this browser. Autofill never submits a form.</p>
+      </div>
+    </header>
+
+    <form id="profile-form" novalidate autocomplete="off">
+      <section class="group" aria-labelledby="personal-heading">
+        <h2 id="personal-heading">Personal details</h2>
+        <label for="fullName">Full name</label>
+        <input id="fullName" name="fullName" type="text" autocomplete="off" spellcheck="false">
+
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" autocomplete="off" spellcheck="false">
+
+        <div class="row">
+          <div>
+            <label for="phone">Phone number</label>
+            <input id="phone" name="phone" type="tel" autocomplete="off" spellcheck="false">
+          </div>
+          <div>
+            <label for="city">City / location</label>
+            <input id="city" name="city" type="text" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+      </section>
+
+      <section class="group" aria-labelledby="education-heading">
+        <h2 id="education-heading">Education</h2>
+        <label for="college">College / university</label>
+        <input id="college" name="college" type="text" autocomplete="off" spellcheck="false">
+
+        <div class="row">
+          <div>
+            <label for="degree">Degree</label>
+            <input id="degree" name="degree" type="text" autocomplete="off" spellcheck="false">
+          </div>
+          <div>
+            <label for="branch">Branch / specialization</label>
+            <input id="branch" name="branch" type="text" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="graduationYear">Graduation year</label>
+            <input id="graduationYear" name="graduationYear" type="text" inputmode="numeric" maxlength="4"
+              autocomplete="off">
+          </div>
+          <div>
+            <label for="cgpa">CGPA</label>
+            <input id="cgpa" name="cgpa" type="text" inputmode="decimal" autocomplete="off">
+          </div>
+        </div>
+      </section>
+
+      <section class="group" aria-labelledby="links-heading">
+        <h2 id="links-heading">Professional links</h2>
+        <label for="linkedin">LinkedIn URL</label>
+        <input id="linkedin" name="linkedin" type="text" inputmode="url" autocomplete="off" spellcheck="false">
+
+        <label for="github">GitHub URL</label>
+        <input id="github" name="github" type="text" inputmode="url" autocomplete="off" spellcheck="false">
+
+        <label for="portfolio">Portfolio URL</label>
+        <input id="portfolio" name="portfolio" type="text" inputmode="url" autocomplete="off" spellcheck="false">
+      </section>
+    </form>
+
+    <section class="group" aria-labelledby="custom-heading" id="custom-section">
+      <h2 id="custom-heading">Custom fields</h2>
+      <div id="custom-list"></div>
+      <button id="add-custom" class="button secondary add-custom-btn" type="button">+ Add Custom Field</button>
+    </section>
+
+    <label class="check" for="overwrite">
+      <input id="overwrite" type="checkbox">
+      <span>Overwrite fields that already have a value</span>
+    </label>
+
+    <div class="actions">
+      <button id="save" class="button secondary" type="submit" form="profile-form">Save Profile</button>
+      <button id="fill" class="button primary" type="button">Fill Current Form</button>
+    </div>
+
+    <div class="actions backup-actions">
+      <button id="export-profile" class="button secondary" type="button">Export Profile</button>
+      <button id="import-profile" class="button secondary" type="button">Import Profile</button>
+      <input id="import-file-input" type="file" accept=".json,application/json" hidden>
+    </div>
+
+    <div id="status" class="status" role="status" aria-live="polite" hidden></div>
+
+    <section id="result" class="result" aria-labelledby="result-heading" hidden>
+      <div class="result-head">
+        <h2 id="result-heading">Result</h2>
+        <span id="result-platform" class="pill"></span>
+      </div>
+      <p id="result-summary" class="result-summary"></p>
+
+      <div id="filled-wrap" hidden>
+        <h3>Filled</h3>
+        <ul id="filled-list" class="field-list"></ul>
+      </div>
+
+      <details id="skipped-details" hidden>
+        <summary id="skipped-summary">Skipped fields</summary>
+        <ul id="skipped-list" class="field-list"></ul>
+      </details>
+
+      <p id="result-note" class="note"></p>
+    </section>
+
+    <footer class="footer">
+      Autofill never clicks Submit, Apply, Next, or other navigation buttons.
+    </footer>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>
